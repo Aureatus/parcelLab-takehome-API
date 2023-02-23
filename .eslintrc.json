@@ -1,0 +1,16 @@
+{
+  "env": {
+    "node": true
+  },
+  "extends": ["@parcellab/eslint-config/typescript"],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "rules": {
+    "require-await": "off",
+    "@typescript-eslint/require-await": "off"
+  }
+}

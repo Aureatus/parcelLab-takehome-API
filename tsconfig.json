@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "Node16",
+    "sourceMap": true,
+    "outDir": "dist"
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"],
+  "ts-node": { "files": true },
+  "extends": "@tsconfig/node-lts-strictest-esm/tsconfig.json"
+}
