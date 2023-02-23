@@ -24,8 +24,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "fastify": "^4.13.0",
-    "fluent-json-schema": "^4.1.0"
+    "@fastify/type-provider-typebox": "^2.4.0",
+    "fastify": "^4.13.0"
   },
   "devDependencies": {
     "@parcellab/eslint-config": "^0.5.2",
