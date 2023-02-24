@@ -13,6 +13,11 @@ const server = fastify({
       },
     },
   },
+  ajv: {
+    customOptions: {
+      coerceTypes: false,
+    },
+  },
 }).withTypeProvider<TypeBoxTypeProvider>();
 
 await server.register(tracking, { prefix: "/tracking" });
