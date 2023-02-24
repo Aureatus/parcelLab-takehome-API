@@ -1,8 +1,11 @@
 import { Static, Type } from "@sinclair/typebox";
+import { readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
 
-import carrierCodes from "../data/carrier_codes.json" assert { type: "json" };
+const carrierCodes = JSON.parse(
+  await readFile("src/data/carrier_codes.json", "utf8")
+) as string[];
 
 const TrackingData = Type.Object({
   courier: Type.Union(carrierCodes.map((code) => Type.Literal(code))), // Perhaps improve by using custom AJV format....

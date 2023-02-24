@@ -1,10 +1,8 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
     "moduleResolution": "Node16",
     "sourceMap": true,
-    "outDir": "dist",
-    "resolveJsonModule": true
+    "outDir": "dist"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"],
