@@ -1,5 +1,8 @@
 import { fastify } from "fastify";
-import type { TypeBoxTypeProvider } from "@fastify/type-provider-typebox";
+import {
+  TypeBoxTypeProvider,
+  TypeBoxValidatorCompiler,
+} from "@fastify/type-provider-typebox";
 
 import tracking from "./routes/tracking.js";
 
@@ -18,7 +21,9 @@ const server = fastify({
       coerceTypes: false,
     },
   },
-}).withTypeProvider<TypeBoxTypeProvider>();
+})
+  .withTypeProvider<TypeBoxTypeProvider>()
+  .setValidatorCompiler(TypeBoxValidatorCompiler);
 
 await server.register(tracking, { prefix: "/tracking" });
 
