@@ -4,6 +4,7 @@ import {
   TypeBoxValidatorCompiler,
 } from "@fastify/type-provider-typebox";
 
+import addCustomFormats from "./plugins/custom-formats.js";
 import tracking from "./routes/tracking.js";
 
 const serverOptions = {
@@ -26,6 +27,8 @@ const serverOptions = {
 const server = fastify(serverOptions)
   .withTypeProvider<TypeBoxTypeProvider>()
   .setValidatorCompiler(TypeBoxValidatorCompiler);
+
+await server.register(addCustomFormats);
 
 await server.register(tracking, { prefix: "/tracking" });
 
