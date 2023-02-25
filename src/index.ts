@@ -6,7 +6,7 @@ import {
 
 import tracking from "./routes/tracking.js";
 
-const server = fastify({
+const serverOptions = {
   logger: {
     transport: {
       target: "pino-pretty",
@@ -21,7 +21,9 @@ const server = fastify({
       coerceTypes: false,
     },
   },
-})
+};
+
+const server = fastify(serverOptions)
   .withTypeProvider<TypeBoxTypeProvider>()
   .setValidatorCompiler(TypeBoxValidatorCompiler);
 
