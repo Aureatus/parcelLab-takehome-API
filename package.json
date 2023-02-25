@@ -25,6 +25,7 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/type-provider-typebox": "^2.4.0",
+    "country-code-lookup": "^0.0.22",
     "fastify": "^4.13.0"
   },
   "devDependencies": {
