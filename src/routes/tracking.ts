@@ -19,8 +19,8 @@ const CarrierCode = TypeSystem.CreateType<(typeof carrierCodes)[number]>(
 const TrackingData = Type.Object({
   courier: CarrierCode(),
   tracking_number: Type.String(),
-  zip_code: Type.String(), // Validate this in a pre-handler using regex perhaps, or with a call to some sort of postcode validation API. Or with custom AJV format.
-  destination_country_iso3: Type.String({ format: "country_code" }), // Validate this in a custom AJV format using country-code-lookup.
+  zip_code: Type.String(),
+  destination_country_iso3: Type.String({ format: "country_code" }),
   return: Type.Optional(Type.Boolean()),
   cancelled: Type.Optional(Type.Boolean()),
   notificationsInactive: Type.Optional(Type.Boolean()),
