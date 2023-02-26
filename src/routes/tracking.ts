@@ -1,4 +1,5 @@
 import { Static, Type } from "@sinclair/typebox";
+import { TypeSystem } from "@sinclair/typebox/system";
 import { readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
@@ -7,8 +8,16 @@ const carrierCodes = JSON.parse(
   await readFile("src/data/carrier_codes.json", "utf8")
 ) as string[];
 
+const CarrierCode = TypeSystem.CreateType<(typeof carrierCodes)[number]>(
+  "CarrierCode",
+  (_options, value) => {
+    if (typeof value !== "string") return false;
+    return carrierCodes.includes(value);
+  }
+);
+
 const TrackingData = Type.Object({
-  courier: Type.Union(carrierCodes.map((code) => Type.Literal(code))), // Perhaps improve by using custom AJV format....
+  courier: CarrierCode(),
   tracking_number: Type.String(),
   zip_code: Type.String(), // Validate this in a pre-handler using regex perhaps, or with a call to some sort of postcode validation API. Or with custom AJV format.
   destination_country_iso3: Type.String({ format: "country_code" }), // Validate this in a custom AJV format using country-code-lookup.
