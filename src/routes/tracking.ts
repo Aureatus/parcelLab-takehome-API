@@ -5,15 +5,19 @@ import { readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
 
+type CarrierCodeType = {
+  [key: string]: string;
+};
+
 const carrierCodes = JSON.parse(
   await readFile("src/data/carrier_codes.json", "utf8")
-) as string[];
+) as CarrierCodeType;
 
 const CarrierCode = TypeSystem.CreateType<(typeof carrierCodes)[number]>(
   "CarrierCode",
   (_options, value) => {
     if (typeof value !== "string") return false;
-    return carrierCodes.includes(value);
+    return Object.keys(carrierCodes).includes(value);
   }
 );
 
