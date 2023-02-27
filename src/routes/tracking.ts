@@ -33,6 +33,8 @@ const TrackingData = Type.Object({
 
 type TrackingType = Static<typeof TrackingData>;
 
+type FileTrackingType = TrackingType[];
+
 const FileParametersSchema = Type.Object({
   type: Type.String(),
 });
@@ -62,7 +64,10 @@ const tracking = async (fastify: FastifyInstance) => {
     }
   );
 
-  fastify.post<{ Body: TrackingType; Params: FileParametersType }>(
+  fastify.post<{
+    Body: TrackingType | FileTrackingType;
+    Params: FileParametersType;
+  }>(
     "/file/:type",
     {
       preValidation: async (req) => {
@@ -71,17 +76,23 @@ const tracking = async (fastify: FastifyInstance) => {
         const dataBuffer = await data.toBuffer(); // Throws error if file is over allowed size.
         const file = dataBuffer.toString();
         if (data.mimetype === "application/json") {
-          const information = JSON.parse(file) as TrackingType; // Not ideal, it's not a good assertion to have.
-          req.body = information;
+          const parsedFile = JSON.parse(file) as unknown;
+          let information: FileTrackingType = [];
+          Array.isArray(parsedFile)
+            ? (information = parsedFile as FileTrackingType) // Not ideal, it's not a good assertion to have.
+            : (information = [parsedFile] as FileTrackingType); // Not ideal, it's not a good assertion to have.
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
-          for (const prop in req.body) {
-            if (!desiredPropertyKeys.includes(prop))
-              delete req.body[prop as keyof TrackingType];
-          }
+          information.forEach((element) => {
+            for (const prop in element) {
+              if (!desiredPropertyKeys.includes(prop))
+                delete element[prop as keyof TrackingType];
+            }
+          });
+          req.body = information;
         }
       },
-      schema: { body: TrackingData, params: FileParametersSchema },
+      schema: { body: Type.Array(TrackingData), params: FileParametersSchema },
     },
     async (req) => {
       return req.body;
