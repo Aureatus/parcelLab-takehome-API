@@ -1,12 +1,12 @@
-[
-  "colissimo",
-  "dhl-gm",
-  "dhl-germany",
-  "dhl-benelux",
-  "dpd-de",
-  "fedex",
-  "gls",
-  "mondial",
-  "royalmail",
-  "ups-mi"
-]
+{
+  "colissimo": "La Poste",
+  "dhl-gm": "DHL Global Mail",
+  "dhl-germany": "DHL",
+  "dhl-benelux": "DHL",
+  "dpd-de": "DPD",
+  "fedex": "FedEx",
+  "gls": "GLS",
+  "mondial": "Mondial Relay",
+  "royalmail": "Royal Mail",
+  "ups-mi": "UPS Mail"
+}
