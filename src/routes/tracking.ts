@@ -75,8 +75,14 @@ const tracking = async (fastify: FastifyInstance) => {
         if (data === undefined) throw new Error("No file uploaded"); // Currently sends 500 status code, should be 400. Can potentially fix with setErrorHandler
         const dataBuffer = await data.toBuffer(); // Throws error if file is over allowed size.
         const file = dataBuffer.toString();
+        const keyCorrectedFile = file
+          .replaceAll("Courier", "courier")
+          .replaceAll("TrackingNo", "tracking_number")
+          .replaceAll("ZipCode", "zip_code")
+          .replaceAll("DestinationCountry", "destination_country_iso3");
+
         if (data.mimetype === "application/json") {
-          const parsedFile = JSON.parse(file) as unknown;
+          const parsedFile = JSON.parse(keyCorrectedFile) as unknown;
           let information: FileTrackingType = [];
           Array.isArray(parsedFile)
             ? (information = parsedFile as FileTrackingType) // Not ideal, it's not a good assertion to have.
