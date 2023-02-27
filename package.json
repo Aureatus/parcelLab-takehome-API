@@ -24,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/multipart": "^7.4.1",
     "@fastify/type-provider-typebox": "^2.4.0",
     "country-code-lookup": "^0.0.22",
     "fastify": "^4.13.0"
