@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Static, Type } from "@sinclair/typebox";
 import { TypeSystem } from "@sinclair/typebox/system";
+import { Value } from "@sinclair/typebox/value";
+
 import { readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
@@ -94,6 +96,15 @@ const tracking = async (fastify: FastifyInstance) => {
               if (!desiredPropertyKeys.includes(prop))
                 delete element[prop as keyof TrackingType];
             }
+          });
+          information.forEach((element) => {
+            if (typeof element.tracking_number === "number")
+              element.tracking_number = Value.Cast(
+                Type.String(),
+                element.tracking_number
+              );
+            if (typeof element.zip_code === "number")
+              element.zip_code = Value.Cast(Type.String(), element.zip_code);
           });
           req.body = information;
         }
