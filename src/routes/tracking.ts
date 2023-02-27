@@ -117,8 +117,7 @@ const tracking = async (fastify: FastifyInstance) => {
           });
 
           req.body = information;
-        }
-        if (data.mimetype === "text/csv") {
+        } else if (data.mimetype === "text/csv") {
           const data: FileTrackingType = [];
 
           await new Promise<void>((resolve) => {
