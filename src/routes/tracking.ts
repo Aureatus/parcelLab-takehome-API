@@ -168,8 +168,7 @@ const tracking = async (fastify: FastifyInstance) => {
           });
 
           req.body = information;
-        }
-        // Handle cases of no supported mimetype
+        } else throw new Error(`File type ${data.mimetype} not supported`);
       },
       schema: { body: Type.Array(TrackingData), params: FileParametersSchema },
     },
