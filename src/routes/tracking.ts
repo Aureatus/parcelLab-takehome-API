@@ -106,6 +106,15 @@ const tracking = async (fastify: FastifyInstance) => {
             if (typeof element.zip_code === "number")
               element.zip_code = Value.Cast(Type.String(), element.zip_code);
           });
+
+          information.forEach((element) => {
+            for (const [key, value] of Object.entries(carrierCodes)) {
+              if (element.courier.split(" ")[0]?.includes("GLS"))
+                element.courier = "gls";
+              if (value === element.courier) element.courier = key;
+            }
+          });
+
           req.body = information;
         }
       },
