@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-misused-promises */
 import { Static, Type } from "@sinclair/typebox";
 import { TypeSystem } from "@sinclair/typebox/system";
 
@@ -82,6 +81,7 @@ const tracking = async (fastify: FastifyInstance) => {
   }>(
     "/file/:type",
     {
+      // eslint-disable-next-line @typescript-eslint/no-misused-promises
       preValidation: async (req) => {
         const data = await req.file();
         if (data === undefined) throw new Error("No file uploaded"); // Currently sends 500 status code, should be 400. Can potentially fix with setErrorHandler
