@@ -93,42 +93,54 @@ const tracking = async (fastify: FastifyInstance) => {
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
 
-          information = information.map((element) => {
-            const constructedObject = { ...element };
-            for (const prop in element) {
-              if (!desiredPropertyKeys.includes(prop)) {
-                delete constructedObject[prop as keyof TrackingType];
+          const getDesiredProperites = () => {
+            return information.map((element) => {
+              const constructedObject = { ...element };
+              for (const prop in element) {
+                if (!desiredPropertyKeys.includes(prop)) {
+                  delete constructedObject[prop as keyof TrackingType];
+                }
               }
-            }
-            return constructedObject;
-          });
+              return constructedObject;
+            });
+          };
 
-          information = information.map((element) => {
-            const constructedObject = { ...element };
-            if (typeof constructedObject.tracking_number === "number")
-              constructedObject.tracking_number = Value.Cast(
-                Type.String(),
-                constructedObject.tracking_number
-              );
-            if (typeof constructedObject.zip_code === "number")
-              constructedObject.zip_code = Value.Cast(
-                Type.String(),
-                constructedObject.zip_code
-              );
+          information = getDesiredProperites();
 
-            return constructedObject;
-          });
+          const castNumbersToStrings = () => {
+            return information.map((element) => {
+              const constructedObject = { ...element };
+              if (typeof constructedObject.tracking_number === "number")
+                constructedObject.tracking_number = Value.Cast(
+                  Type.String(),
+                  constructedObject.tracking_number
+                );
+              if (typeof constructedObject.zip_code === "number")
+                constructedObject.zip_code = Value.Cast(
+                  Type.String(),
+                  constructedObject.zip_code
+                );
 
-          information = information.map((element) => {
-            const constructedObject = { ...element };
-            for (const [key, value] of Object.entries(carrierCodes)) {
-              if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
-                constructedObject.courier = "gls";
-              if (value === constructedObject.courier)
-                constructedObject.courier = key;
-            }
-            return constructedObject;
-          });
+              return constructedObject;
+            });
+          };
+
+          information = castNumbersToStrings();
+
+          const exchangeCarrierNamesForKeys = () => {
+            return information.map((element) => {
+              const constructedObject = { ...element };
+              for (const [key, value] of Object.entries(carrierCodes)) {
+                if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
+                  constructedObject.courier = "gls";
+                if (value === constructedObject.courier)
+                  constructedObject.courier = key;
+              }
+              return constructedObject;
+            });
+          };
+
+          information = exchangeCarrierNamesForKeys();
 
           req.body = information;
         } else if (data.mimetype === "text/csv") {
@@ -157,42 +169,54 @@ const tracking = async (fastify: FastifyInstance) => {
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
 
-          information = information.map((element) => {
-            const constructedObject = { ...element };
-            for (const prop in element) {
-              if (!desiredPropertyKeys.includes(prop)) {
-                delete constructedObject[prop as keyof TrackingType];
+          const getDesiredProperites = () => {
+            return information.map((element) => {
+              const constructedObject = { ...element };
+              for (const prop in element) {
+                if (!desiredPropertyKeys.includes(prop)) {
+                  delete constructedObject[prop as keyof TrackingType];
+                }
               }
-            }
-            return constructedObject;
-          });
+              return constructedObject;
+            });
+          };
 
-          information = information.map((element) => {
-            const constructedObject = { ...element };
-            if (typeof constructedObject.tracking_number === "number")
-              constructedObject.tracking_number = Value.Cast(
-                Type.String(),
-                constructedObject.tracking_number
-              );
-            if (typeof constructedObject.zip_code === "number")
-              constructedObject.zip_code = Value.Cast(
-                Type.String(),
-                constructedObject.zip_code
-              );
+          information = getDesiredProperites();
 
-            return constructedObject;
-          });
+          const castNumbersToStrings = () => {
+            return information.map((element) => {
+              const constructedObject = { ...element };
+              if (typeof constructedObject.tracking_number === "number")
+                constructedObject.tracking_number = Value.Cast(
+                  Type.String(),
+                  constructedObject.tracking_number
+                );
+              if (typeof constructedObject.zip_code === "number")
+                constructedObject.zip_code = Value.Cast(
+                  Type.String(),
+                  constructedObject.zip_code
+                );
 
-          information = information.map((element) => {
-            const constructedObject = { ...element };
-            for (const [key, value] of Object.entries(carrierCodes)) {
-              if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
-                constructedObject.courier = "gls";
-              if (value === constructedObject.courier)
-                constructedObject.courier = key;
-            }
-            return constructedObject;
-          });
+              return constructedObject;
+            });
+          };
+
+          information = castNumbersToStrings();
+
+          const exchangeCarrierNamesForKeys = () => {
+            return information.map((element) => {
+              const constructedObject = { ...element };
+              for (const [key, value] of Object.entries(carrierCodes)) {
+                if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
+                  constructedObject.courier = "gls";
+                if (value === constructedObject.courier)
+                  constructedObject.courier = key;
+              }
+              return constructedObject;
+            });
+          };
+
+          information = exchangeCarrierNamesForKeys();
 
           req.body = information;
         } else throw new Error(`File type ${data.mimetype} not supported`);
