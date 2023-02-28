@@ -24,8 +24,7 @@ const tracking = async (fastify: FastifyInstance) => {
     "/",
     {
       preValidation: (req, _reply, done) => {
-        const { properties } = TrackingData;
-        const desiredPropertyKeys = Object.keys(properties);
+        const desiredPropertyKeys = Object.keys(TrackingData.properties);
         for (const prop in req.body) {
           if (!desiredPropertyKeys.includes(prop))
             delete req.body[prop as keyof TrackingType];
@@ -69,8 +68,7 @@ const tracking = async (fastify: FastifyInstance) => {
           Array.isArray(parsedFile)
             ? (information = parsedFile as FileTrackingType) // Not ideal, it's not a good assertion to have.
             : (information = [parsedFile] as FileTrackingType); // Not ideal, it's not a good assertion to have.
-          const { properties } = TrackingData;
-          const desiredPropertyKeys = Object.keys(properties);
+          const desiredPropertyKeys = Object.keys(TrackingData.properties);
 
           information = getDesiredProperites(information, desiredPropertyKeys);
 
@@ -86,8 +84,7 @@ const tracking = async (fastify: FastifyInstance) => {
           Array.isArray(data)
             ? (information = data) // Not ideal, it's not a good assertion to have.
             : (information = [data] as FileTrackingType); // Not ideal, it's not a good assertion to have.
-          const { properties } = TrackingData;
-          const desiredPropertyKeys = Object.keys(properties);
+          const desiredPropertyKeys = Object.keys(TrackingData.properties);
 
           information = getDesiredProperites(information, desiredPropertyKeys);
 
