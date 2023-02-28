@@ -1,5 +1,3 @@
-import { Type } from "@sinclair/typebox";
-
 import type { FastifyInstance } from "fastify";
 
 import getDesiredProperites from "../helpers/transformations/get-desired-properties.js";
@@ -10,6 +8,7 @@ import fakeSend from "../helpers/fake-send.js";
 import {
   carrierCodes,
   FileParametersSchema,
+  FileTrackingData,
   TrackingData,
 } from "../schema/tracking.js";
 
@@ -99,7 +98,7 @@ const tracking = async (fastify: FastifyInstance) => {
           req.body = information;
         } else throw new Error(`File type ${data.mimetype} not supported`);
       },
-      schema: { body: Type.Array(TrackingData), params: FileParametersSchema },
+      schema: { body: FileTrackingData, params: FileParametersSchema },
     },
     async (req) => {
       await fakeSend(`${baseUrl}/upload/data/${req.params.type}`, {
