@@ -1,4 +1,4 @@
-import { Static, Type } from "@sinclair/typebox";
+import { Type } from "@sinclair/typebox";
 
 import type { FastifyInstance } from "fastify";
 
@@ -9,17 +9,15 @@ import parseCSV from "../helpers/parse-csv.js";
 import fakeSend from "../helpers/fake-send.js";
 import {
   carrierCodes,
+  FileParametersSchema,
   TrackingData,
-  TrackingType,
 } from "../schema/tracking.js";
 
-export type FileTrackingType = TrackingType[];
-
-const FileParametersSchema = Type.Object({
-  type: Type.String(),
-});
-
-type FileParametersType = Static<typeof FileParametersSchema>;
+import type {
+  FileParametersType,
+  FileTrackingType,
+  TrackingType,
+} from "../schema/tracking.js";
 
 const tracking = async (fastify: FastifyInstance) => {
   const baseUrl = "https://api.parcellab.com";

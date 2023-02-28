@@ -1,7 +1,7 @@
 import { Type } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 
-import type { FileTrackingType } from "../../routes/tracking.js";
+import type { FileTrackingType } from "../../schema/tracking.js";
 
 const castNumsToStrings = (information: FileTrackingType) => {
   return information.map((element) => {

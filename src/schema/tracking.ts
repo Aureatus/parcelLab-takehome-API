@@ -30,4 +30,20 @@ const TrackingData = Type.Object({
 
 type TrackingType = Static<typeof TrackingData>;
 
-export { CarrierCodeType, carrierCodes, TrackingData, TrackingType };
+type FileTrackingType = TrackingType[];
+
+const FileParametersSchema = Type.Object({
+  type: Type.String(),
+});
+
+type FileParametersType = Static<typeof FileParametersSchema>;
+
+export {
+  CarrierCodeType,
+  carrierCodes,
+  TrackingData,
+  TrackingType,
+  FileTrackingType,
+  FileParametersSchema,
+  FileParametersType,
+};
