@@ -89,10 +89,10 @@ const tracking = async (fastify: FastifyInstance) => {
     },
     async (req) => {
       if (Array.isArray(req.body)) {
-        for (const test of req.body) {
+        for (const trackingObject of req.body) {
           await fakeSend(`${baseUrl}/track`, {
             method: "POST",
-            body: test,
+            body: trackingObject,
           });
         }
       } else
