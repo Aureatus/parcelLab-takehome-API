@@ -18,7 +18,7 @@ const parseCSV = async (file: string) => {
         resolve();
       });
   });
-  return data;
+  return data as unknown;
 };
 
 export default parseCSV;

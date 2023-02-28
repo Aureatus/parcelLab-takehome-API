@@ -82,7 +82,7 @@ const tracking = async (fastify: FastifyInstance) => {
 
           let information: FileTrackingType = [];
           Array.isArray(data)
-            ? (information = data) // Not ideal, it's not a good assertion to have.
+            ? (information = data as FileTrackingType) // Not ideal, it's not a good assertion to have.
             : (information = [data] as FileTrackingType); // Not ideal, it's not a good assertion to have.
           const desiredPropertyKeys = Object.keys(TrackingData.properties);
 
