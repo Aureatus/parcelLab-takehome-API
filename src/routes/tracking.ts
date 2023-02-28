@@ -98,10 +98,18 @@ const tracking = async (fastify: FastifyInstance) => {
       schema: { body: FileTrackingData, params: FileParametersSchema },
     },
     async (req) => {
-      await fakeSend(`${baseUrl}/upload/data/${req.params.type}`, {
-        method: "POST",
-        body: req.body,
-      });
+      if (Array.isArray(req.body)) {
+        for (const test of req.body) {
+          await fakeSend(`${baseUrl}/track`, {
+            method: "POST",
+            body: test,
+          });
+        }
+      } else
+        await fakeSend(`${baseUrl}/track`, {
+          method: "POST",
+          body: req.body,
+        });
       return req.body;
     }
   );
