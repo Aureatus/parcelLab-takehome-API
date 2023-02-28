@@ -93,7 +93,10 @@ const tracking = async (fastify: FastifyInstance) => {
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
 
-          const getDesiredProperites = () => {
+          const getDesiredProperites = (
+            information: FileTrackingType,
+            desiredPropertyKeys: string[]
+          ) => {
             return information.map((element) => {
               const constructedObject = { ...element };
               for (const prop in element) {
@@ -105,9 +108,9 @@ const tracking = async (fastify: FastifyInstance) => {
             });
           };
 
-          information = getDesiredProperites();
+          information = getDesiredProperites(information, desiredPropertyKeys);
 
-          const castNumbersToStrings = () => {
+          const castNumbersToStrings = (information: FileTrackingType) => {
             return information.map((element) => {
               const constructedObject = { ...element };
               if (typeof constructedObject.tracking_number === "number")
@@ -125,9 +128,12 @@ const tracking = async (fastify: FastifyInstance) => {
             });
           };
 
-          information = castNumbersToStrings();
+          information = castNumbersToStrings(information);
 
-          const exchangeCarrierNamesForKeys = () => {
+          const exchangeCarrierNamesForKeys = (
+            information: FileTrackingType,
+            carrierCodes: CarrierCodeType
+          ) => {
             return information.map((element) => {
               const constructedObject = { ...element };
               for (const [key, value] of Object.entries(carrierCodes)) {
@@ -140,7 +146,7 @@ const tracking = async (fastify: FastifyInstance) => {
             });
           };
 
-          information = exchangeCarrierNamesForKeys();
+          information = exchangeCarrierNamesForKeys(information, carrierCodes);
 
           req.body = information;
         } else if (data.mimetype === "text/csv") {
@@ -169,7 +175,10 @@ const tracking = async (fastify: FastifyInstance) => {
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
 
-          const getDesiredProperites = () => {
+          const getDesiredProperites = (
+            information: FileTrackingType,
+            desiredPropertyKeys: string[]
+          ) => {
             return information.map((element) => {
               const constructedObject = { ...element };
               for (const prop in element) {
@@ -181,9 +190,9 @@ const tracking = async (fastify: FastifyInstance) => {
             });
           };
 
-          information = getDesiredProperites();
+          information = getDesiredProperites(information, desiredPropertyKeys);
 
-          const castNumbersToStrings = () => {
+          const castNumbersToStrings = (information: FileTrackingType) => {
             return information.map((element) => {
               const constructedObject = { ...element };
               if (typeof constructedObject.tracking_number === "number")
@@ -201,9 +210,12 @@ const tracking = async (fastify: FastifyInstance) => {
             });
           };
 
-          information = castNumbersToStrings();
+          information = castNumbersToStrings(information);
 
-          const exchangeCarrierNamesForKeys = () => {
+          const exchangeCarrierNamesForKeys = (
+            information: FileTrackingType,
+            carrierCodes: CarrierCodeType
+          ) => {
             return information.map((element) => {
               const constructedObject = { ...element };
               for (const [key, value] of Object.entries(carrierCodes)) {
@@ -216,7 +228,7 @@ const tracking = async (fastify: FastifyInstance) => {
             });
           };
 
-          information = exchangeCarrierNamesForKeys();
+          information = exchangeCarrierNamesForKeys(information, carrierCodes);
 
           req.body = information;
         } else throw new Error(`File type ${data.mimetype} not supported`);
