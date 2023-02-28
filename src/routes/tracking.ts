@@ -7,9 +7,9 @@ import { readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
 
-import getDesiredProperites from "../helpers/get-desired-properties.js";
-import castNumsToStrings from "../helpers/cast-nums-to-strings.js";
-import exchangeCarrierNamesForKeys from "../helpers/exchange-carrier-names-for-keys.js";
+import getDesiredProperites from "../helpers/transformations/get-desired-properties.js";
+import castNumsToStrings from "../helpers/transformations/cast-nums-to-strings.js";
+import exchangeCarrierNamesForKeys from "../helpers/transformations/exchange-carrier-names-for-keys.js";
 
 export type CarrierCodeType = {
   [key: string]: string;

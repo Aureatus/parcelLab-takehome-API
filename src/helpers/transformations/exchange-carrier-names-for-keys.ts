@@ -1,4 +1,7 @@
-import type { CarrierCodeType, FileTrackingType } from "../routes/tracking.js";
+import type {
+  CarrierCodeType,
+  FileTrackingType,
+} from "../../routes/tracking.js";
 
 const exchangeCarrierNamesForKeys = (
   information: FileTrackingType,
