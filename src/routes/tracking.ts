@@ -10,6 +10,7 @@ import getDesiredProperites from "../helpers/transformations/get-desired-propert
 import castNumsToStrings from "../helpers/transformations/cast-nums-to-strings.js";
 import exchangeCarrierNamesForKeys from "../helpers/transformations/exchange-carrier-names-for-keys.js";
 import parseCSV from "../helpers/parse-csv.js";
+import fakeSend from "../helpers/fake-send.js";
 
 export type CarrierCodeType = {
   [key: string]: string;
@@ -48,6 +49,7 @@ const FileParametersSchema = Type.Object({
 type FileParametersType = Static<typeof FileParametersSchema>;
 
 const tracking = async (fastify: FastifyInstance) => {
+  const baseUrl = "https://api.parcellab.com";
   fastify.post<{ Body: TrackingType }>(
     "/",
     {
@@ -64,7 +66,11 @@ const tracking = async (fastify: FastifyInstance) => {
         body: TrackingData,
       },
     },
-    (req) => {
+    async (req) => {
+      await fakeSend(`${baseUrl}/track`, {
+        method: "POST",
+        body: req.body,
+      });
       console.log(req.body);
       return "tracking";
     }
@@ -125,6 +131,10 @@ const tracking = async (fastify: FastifyInstance) => {
       schema: { body: Type.Array(TrackingData), params: FileParametersSchema },
     },
     async (req) => {
+      await fakeSend(`${baseUrl}/upload/data/${req.params.type}`, {
+        method: "POST",
+        body: req.body,
+      });
       return req.body;
     }
   );
