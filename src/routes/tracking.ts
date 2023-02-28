@@ -62,38 +62,28 @@ const tracking = async (fastify: FastifyInstance) => {
           .replaceAll("ZipCode", "zip_code")
           .replaceAll("DestinationCountry", "destination_country_iso3");
 
-        if (data.mimetype === "application/json") {
-          const parsedFile = JSON.parse(keyCorrectedFile) as unknown;
-          let information: FileTrackingType = [];
-          Array.isArray(parsedFile)
-            ? (information = parsedFile as FileTrackingType) // Not ideal, it's not a good assertion to have.
-            : (information = [parsedFile] as FileTrackingType); // Not ideal, it's not a good assertion to have.
-          const desiredPropertyKeys = Object.keys(TrackingData.properties);
+        let parsedData: unknown;
 
-          information = getDesiredProperites(information, desiredPropertyKeys);
+        if (data.mimetype === "application/json")
+          parsedData = JSON.parse(keyCorrectedFile);
+        else if (data.mimetype === "text/csv")
+          parsedData = await parseCSV(keyCorrectedFile);
+        else throw new Error(`File type ${data.mimetype} not supported`);
 
-          information = castNumsToStrings(information);
+        let information: FileTrackingType = [];
 
-          information = exchangeCarrierNamesForKeys(information, carrierCodes);
+        Array.isArray(parsedData)
+          ? (information = parsedData as FileTrackingType) // Not ideal, it's not a good assertion to have.
+          : (information = [parsedData] as FileTrackingType); // Not ideal, it's not a good assertion to have.
 
-          req.body = information;
-        } else if (data.mimetype === "text/csv") {
-          const data = await parseCSV(keyCorrectedFile);
+        const desiredPropertyKeys = Object.keys(TrackingData.properties);
 
-          let information: FileTrackingType = [];
-          Array.isArray(data)
-            ? (information = data as FileTrackingType) // Not ideal, it's not a good assertion to have.
-            : (information = [data] as FileTrackingType); // Not ideal, it's not a good assertion to have.
-          const desiredPropertyKeys = Object.keys(TrackingData.properties);
+        information = getDesiredProperites(information, desiredPropertyKeys);
 
-          information = getDesiredProperites(information, desiredPropertyKeys);
+        information = castNumsToStrings(information);
 
-          information = castNumsToStrings(information);
-
-          information = exchangeCarrierNamesForKeys(information, carrierCodes);
-
-          req.body = information;
-        } else throw new Error(`File type ${data.mimetype} not supported`);
+        information = exchangeCarrierNamesForKeys(information, carrierCodes);
+        req.body = information;
       },
       schema: { body: FileTrackingData, params: FileParametersSchema },
     },
