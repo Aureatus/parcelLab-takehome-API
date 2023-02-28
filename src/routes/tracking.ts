@@ -9,8 +9,9 @@ import type { FastifyInstance } from "fastify";
 
 import getDesiredProperites from "../helpers/get-desired-properties.js";
 import castNumsToStrings from "../helpers/cast-nums-to-strings.js";
+import exchangeCarrierNamesForKeys from "../helpers/exchange-carrier-names-for-keys.js";
 
-type CarrierCodeType = {
+export type CarrierCodeType = {
   [key: string]: string;
 };
 
@@ -99,22 +100,6 @@ const tracking = async (fastify: FastifyInstance) => {
 
           information = castNumsToStrings(information);
 
-          const exchangeCarrierNamesForKeys = (
-            information: FileTrackingType,
-            carrierCodes: CarrierCodeType
-          ) => {
-            return information.map((element) => {
-              const constructedObject = { ...element };
-              for (const [key, value] of Object.entries(carrierCodes)) {
-                if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
-                  constructedObject.courier = "gls";
-                if (value === constructedObject.courier)
-                  constructedObject.courier = key;
-              }
-              return constructedObject;
-            });
-          };
-
           information = exchangeCarrierNamesForKeys(information, carrierCodes);
 
           req.body = information;
@@ -147,22 +132,6 @@ const tracking = async (fastify: FastifyInstance) => {
           information = getDesiredProperites(information, desiredPropertyKeys);
 
           information = castNumsToStrings(information);
-
-          const exchangeCarrierNamesForKeys = (
-            information: FileTrackingType,
-            carrierCodes: CarrierCodeType
-          ) => {
-            return information.map((element) => {
-              const constructedObject = { ...element };
-              for (const [key, value] of Object.entries(carrierCodes)) {
-                if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
-                  constructedObject.courier = "gls";
-                if (value === constructedObject.courier)
-                  constructedObject.courier = key;
-              }
-              return constructedObject;
-            });
-          };
 
           information = exchangeCarrierNamesForKeys(information, carrierCodes);
 
