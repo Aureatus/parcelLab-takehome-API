@@ -1,7 +1,4 @@
 import { Static, Type } from "@sinclair/typebox";
-import { TypeSystem } from "@sinclair/typebox/system";
-
-import { readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
 
@@ -10,34 +7,11 @@ import castNumsToStrings from "../helpers/transformations/cast-nums-to-strings.j
 import exchangeCarrierNamesForKeys from "../helpers/transformations/exchange-carrier-names-for-keys.js";
 import parseCSV from "../helpers/parse-csv.js";
 import fakeSend from "../helpers/fake-send.js";
-
-export type CarrierCodeType = {
-  [key: string]: string;
-};
-
-const carrierCodes = JSON.parse(
-  await readFile("src/data/carrier_codes.json", "utf8")
-) as CarrierCodeType;
-
-const CarrierCode = TypeSystem.CreateType<(typeof carrierCodes)[number]>(
-  "CarrierCode",
-  (_options, value) => {
-    if (typeof value !== "string") return false;
-    return Object.keys(carrierCodes).includes(value);
-  }
-);
-
-const TrackingData = Type.Object({
-  courier: CarrierCode(),
-  tracking_number: Type.String(),
-  zip_code: Type.String(),
-  destination_country_iso3: Type.String({ format: "country_code" }),
-  return: Type.Optional(Type.Boolean()),
-  cancelled: Type.Optional(Type.Boolean()),
-  notificationsInactive: Type.Optional(Type.Boolean()),
-});
-
-export type TrackingType = Static<typeof TrackingData>;
+import {
+  carrierCodes,
+  TrackingData,
+  TrackingType,
+} from "../schema/tracking.js";
 
 export type FileTrackingType = TrackingType[];
 

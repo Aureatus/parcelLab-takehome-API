@@ -1,5 +1,6 @@
 import * as csv from "fast-csv";
-import type { FileTrackingType, TrackingType } from "../routes/tracking.js";
+import type { FileTrackingType } from "../routes/tracking.js";
+import type { TrackingType } from "../schema/tracking.js";
 
 const parseCSV = async (file: string) => {
   const data: FileTrackingType = [];

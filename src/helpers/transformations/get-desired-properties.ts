@@ -1,4 +1,5 @@
-import type { FileTrackingType, TrackingType } from "../../routes/tracking.js";
+import type { FileTrackingType } from "../../routes/tracking.js";
+import type { TrackingType } from "../../schema/tracking.js";
 
 const getDesiredProperites = (
   information: FileTrackingType,
