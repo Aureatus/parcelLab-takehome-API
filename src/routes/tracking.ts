@@ -8,6 +8,8 @@ import { readFile } from "node:fs/promises";
 
 import type { FastifyInstance } from "fastify";
 
+import getDesiredProperites from "../helpers/get-desired-properties.js";
+
 type CarrierCodeType = {
   [key: string]: string;
 };
@@ -34,9 +36,9 @@ const TrackingData = Type.Object({
   notificationsInactive: Type.Optional(Type.Boolean()),
 });
 
-type TrackingType = Static<typeof TrackingData>;
+export type TrackingType = Static<typeof TrackingData>;
 
-type FileTrackingType = TrackingType[];
+export type FileTrackingType = TrackingType[];
 
 const FileParametersSchema = Type.Object({
   type: Type.String(),
@@ -92,21 +94,6 @@ const tracking = async (fastify: FastifyInstance) => {
             : (information = [parsedFile] as FileTrackingType); // Not ideal, it's not a good assertion to have.
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
-
-          const getDesiredProperites = (
-            information: FileTrackingType,
-            desiredPropertyKeys: string[]
-          ) => {
-            return information.map((element) => {
-              const constructedObject = { ...element };
-              for (const prop in element) {
-                if (!desiredPropertyKeys.includes(prop)) {
-                  delete constructedObject[prop as keyof TrackingType];
-                }
-              }
-              return constructedObject;
-            });
-          };
 
           information = getDesiredProperites(information, desiredPropertyKeys);
 
@@ -174,21 +161,6 @@ const tracking = async (fastify: FastifyInstance) => {
             : (information = [data] as FileTrackingType); // Not ideal, it's not a good assertion to have.
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
-
-          const getDesiredProperites = (
-            information: FileTrackingType,
-            desiredPropertyKeys: string[]
-          ) => {
-            return information.map((element) => {
-              const constructedObject = { ...element };
-              for (const prop in element) {
-                if (!desiredPropertyKeys.includes(prop)) {
-                  delete constructedObject[prop as keyof TrackingType];
-                }
-              }
-              return constructedObject;
-            });
-          };
 
           information = getDesiredProperites(information, desiredPropertyKeys);
 
