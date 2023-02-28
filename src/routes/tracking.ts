@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Static, Type } from "@sinclair/typebox";
 import { TypeSystem } from "@sinclair/typebox/system";
-import { Value } from "@sinclair/typebox/value";
 import * as csv from "fast-csv";
 
 import { readFile } from "node:fs/promises";
@@ -9,6 +8,7 @@ import { readFile } from "node:fs/promises";
 import type { FastifyInstance } from "fastify";
 
 import getDesiredProperites from "../helpers/get-desired-properties.js";
+import castNumsToStrings from "../helpers/cast-nums-to-strings.js";
 
 type CarrierCodeType = {
   [key: string]: string;
@@ -97,25 +97,7 @@ const tracking = async (fastify: FastifyInstance) => {
 
           information = getDesiredProperites(information, desiredPropertyKeys);
 
-          const castNumbersToStrings = (information: FileTrackingType) => {
-            return information.map((element) => {
-              const constructedObject = { ...element };
-              if (typeof constructedObject.tracking_number === "number")
-                constructedObject.tracking_number = Value.Cast(
-                  Type.String(),
-                  constructedObject.tracking_number
-                );
-              if (typeof constructedObject.zip_code === "number")
-                constructedObject.zip_code = Value.Cast(
-                  Type.String(),
-                  constructedObject.zip_code
-                );
-
-              return constructedObject;
-            });
-          };
-
-          information = castNumbersToStrings(information);
+          information = castNumsToStrings(information);
 
           const exchangeCarrierNamesForKeys = (
             information: FileTrackingType,
@@ -164,25 +146,7 @@ const tracking = async (fastify: FastifyInstance) => {
 
           information = getDesiredProperites(information, desiredPropertyKeys);
 
-          const castNumbersToStrings = (information: FileTrackingType) => {
-            return information.map((element) => {
-              const constructedObject = { ...element };
-              if (typeof constructedObject.tracking_number === "number")
-                constructedObject.tracking_number = Value.Cast(
-                  Type.String(),
-                  constructedObject.tracking_number
-                );
-              if (typeof constructedObject.zip_code === "number")
-                constructedObject.zip_code = Value.Cast(
-                  Type.String(),
-                  constructedObject.zip_code
-                );
-
-              return constructedObject;
-            });
-          };
-
-          information = castNumbersToStrings(information);
+          information = castNumsToStrings(information);
 
           const exchangeCarrierNamesForKeys = (
             information: FileTrackingType,
