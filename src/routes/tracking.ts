@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { Static, Type } from "@sinclair/typebox";
 import { TypeSystem } from "@sinclair/typebox/system";
-import * as csv from "fast-csv";
 
 import { readFile } from "node:fs/promises";
 
@@ -10,6 +9,7 @@ import type { FastifyInstance } from "fastify";
 import getDesiredProperites from "../helpers/transformations/get-desired-properties.js";
 import castNumsToStrings from "../helpers/transformations/cast-nums-to-strings.js";
 import exchangeCarrierNamesForKeys from "../helpers/transformations/exchange-carrier-names-for-keys.js";
+import parseCSV from "../helpers/parse-csv.js";
 
 export type CarrierCodeType = {
   [key: string]: string;
@@ -104,24 +104,8 @@ const tracking = async (fastify: FastifyInstance) => {
 
           req.body = information;
         } else if (data.mimetype === "text/csv") {
-          const data: FileTrackingType = [];
+          const data = await parseCSV(keyCorrectedFile);
 
-          await new Promise<void>((resolve) => {
-            csv
-              .parseString(keyCorrectedFile, {
-                objectMode: true,
-                delimiter: ";",
-                headers: true,
-                ignoreEmpty: true,
-                trim: true,
-              })
-              .on("error", (error) => console.error(error))
-              .on("data", (row) => data.push(row as TrackingType))
-              .on("end", () => {
-                req.body = data;
-                resolve();
-              });
-          });
           let information: FileTrackingType = [];
           Array.isArray(data)
             ? (information = data) // Not ideal, it's not a good assertion to have.
