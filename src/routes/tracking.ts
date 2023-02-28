@@ -70,8 +70,7 @@ const tracking = async (fastify: FastifyInstance) => {
         method: "POST",
         body: req.body,
       });
-      console.log(req.body);
-      return "tracking";
+      return req.body;
     }
   );
 
