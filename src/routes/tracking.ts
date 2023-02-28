@@ -92,28 +92,42 @@ const tracking = async (fastify: FastifyInstance) => {
             : (information = [parsedFile] as FileTrackingType); // Not ideal, it's not a good assertion to have.
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
-          information.forEach((element) => {
+
+          information = information.map((element) => {
+            const constructedObject = { ...element };
             for (const prop in element) {
-              if (!desiredPropertyKeys.includes(prop))
-                delete element[prop as keyof TrackingType];
+              if (!desiredPropertyKeys.includes(prop)) {
+                delete constructedObject[prop as keyof TrackingType];
+              }
             }
-          });
-          information.forEach((element) => {
-            if (typeof element.tracking_number === "number")
-              element.tracking_number = Value.Cast(
-                Type.String(),
-                element.tracking_number
-              );
-            if (typeof element.zip_code === "number")
-              element.zip_code = Value.Cast(Type.String(), element.zip_code);
+            return constructedObject;
           });
 
-          information.forEach((element) => {
+          information = information.map((element) => {
+            const constructedObject = { ...element };
+            if (typeof constructedObject.tracking_number === "number")
+              constructedObject.tracking_number = Value.Cast(
+                Type.String(),
+                constructedObject.tracking_number
+              );
+            if (typeof constructedObject.zip_code === "number")
+              constructedObject.zip_code = Value.Cast(
+                Type.String(),
+                constructedObject.zip_code
+              );
+
+            return constructedObject;
+          });
+
+          information = information.map((element) => {
+            const constructedObject = { ...element };
             for (const [key, value] of Object.entries(carrierCodes)) {
-              if (element.courier.split(" ")[0]?.includes("GLS"))
-                element.courier = "gls";
-              if (value === element.courier) element.courier = key;
+              if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
+                constructedObject.courier = "gls";
+              if (value === constructedObject.courier)
+                constructedObject.courier = key;
             }
+            return constructedObject;
           });
 
           req.body = information;
@@ -142,28 +156,42 @@ const tracking = async (fastify: FastifyInstance) => {
             : (information = [data] as FileTrackingType); // Not ideal, it's not a good assertion to have.
           const { properties } = TrackingData;
           const desiredPropertyKeys = Object.keys(properties);
-          information.forEach((element) => {
+
+          information = information.map((element) => {
+            const constructedObject = { ...element };
             for (const prop in element) {
-              if (!desiredPropertyKeys.includes(prop))
-                delete element[prop as keyof TrackingType];
+              if (!desiredPropertyKeys.includes(prop)) {
+                delete constructedObject[prop as keyof TrackingType];
+              }
             }
-          });
-          information.forEach((element) => {
-            if (typeof element.tracking_number === "number")
-              element.tracking_number = Value.Cast(
-                Type.String(),
-                element.tracking_number
-              );
-            if (typeof element.zip_code === "number")
-              element.zip_code = Value.Cast(Type.String(), element.zip_code);
+            return constructedObject;
           });
 
-          information.forEach((element) => {
+          information = information.map((element) => {
+            const constructedObject = { ...element };
+            if (typeof constructedObject.tracking_number === "number")
+              constructedObject.tracking_number = Value.Cast(
+                Type.String(),
+                constructedObject.tracking_number
+              );
+            if (typeof constructedObject.zip_code === "number")
+              constructedObject.zip_code = Value.Cast(
+                Type.String(),
+                constructedObject.zip_code
+              );
+
+            return constructedObject;
+          });
+
+          information = information.map((element) => {
+            const constructedObject = { ...element };
             for (const [key, value] of Object.entries(carrierCodes)) {
-              if (element.courier.split(" ")[0]?.includes("GLS"))
-                element.courier = "gls";
-              if (value === element.courier) element.courier = key;
+              if (constructedObject.courier.split(" ")[0]?.includes("GLS"))
+                constructedObject.courier = "gls";
+              if (value === constructedObject.courier)
+                constructedObject.courier = key;
             }
+            return constructedObject;
           });
 
           req.body = information;
